@@ -1,11 +1,9 @@
-// Package helloworld provides a set of Cloud Functions samples.
 package subject
 
 import (
 	"context"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 
 	"cloud.google.com/go/pubsub"
@@ -28,15 +26,35 @@ func init() {
         }
 }
 
+func publishMessage(ctx context.Context, m pubsub.Message, topic string) error {
+	id, err := client.Topic(topic).Publish(ctx, &m).Get(ctx)
+	if err != nil {
+		log.Printf("topic(%s).Publish.Get: %v", topic, err)
+		return err
+	}
+	fmt.Sprintf("Published msg: %s", id)
+	log.Printf("Published msg: %s", id)
+	return nil
+}
 
 
 // SubjectPubSub consumes a Pub/Sub message.
-func SubjetPubSub(ctx context.Context, m pubsub.Message) error {
-	id, err := client.Topic("subject-test").Publish(ctx, m).Get(r.Context())
-	if err != nil {
-		log.Printf("topic(%s).Publish.Get: %v", p.Topic, err)
-		http.Error(w, "Error publishing message", http.StatusInternalServerError)
-		return
+func SubjectPubSubDispatcher(ctx context.Context, m pubsub.Message) error {
+	switch m.Attributes["_kind"] {
+	case "accepted" :
+		return publishMessage(ctx, m, "accepted-subject-events")
+	case "created" :
+		return publishMessage(ctx, m, "created-subject-events")
+	case "refused" :
+		return publishMessage(ctx, m, "refused-subject-events")
+	case "deleted" :
+		return publishMessage(ctx, m, "deleted-subject-events")
+	case "descriptionChanged" :
+		return publishMessage(ctx, m, "description-changed-subject-events")
+	case "schedulesChanged" :
+		return publishMessage(ctx, m, "schedules-changed-subject-events")
+	case "titleChanged" :
+		return publishMessage(ctx, m, "title-changed-subject-events")
 	}
-	fmt.Fprintf(w, "Published msg: %v", id)
+	return nil
 }
