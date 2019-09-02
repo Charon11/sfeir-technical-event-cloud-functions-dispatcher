@@ -1,11 +1,18 @@
-package subject
+package gcloud
 
 import (
 	"cloud.google.com/go/pubsub"
 	"context"
-	"fmt"
+	"encoding/json"
 	"log"
+	"os"
+	"technicalevent.sfeir.lu/events"
 )
+
+var projectID = os.Getenv("GCP_PROJECT")
+
+// client is a global Pub/Sub client, initialized once per instance.
+var client *pubsub.Client
 
 func init() {
 	// err is pre-declared to avoid shadowing client.
@@ -18,6 +25,18 @@ func init() {
 	}
 }
 
+func NewMessage(event events.EventType) *pubsub.Message {
+	data, err := json.Marshal(event)
+	if err != nil {
+		log.Fatalf("Marshal events: %v", err)
+	}
+	msg := &pubsub.Message{
+		Data:       data,
+		Attributes: map[string]string{"_kind": event.GetKind()},
+	}
+	return msg
+}
+
 func PublishMessage(ctx context.Context, m pubsub.Message, topic string) error {
 
 	id, err := client.Topic(topic).Publish(ctx, &m).Get(ctx)
@@ -25,7 +44,6 @@ func PublishMessage(ctx context.Context, m pubsub.Message, topic string) error {
 		log.Printf("topic(%s).Publish.Get: %v", topic, err)
 		return err
 	}
-	fmt.Sprintf("Published msg: %s", id)
 	log.Printf("Published msg: %s", id)
 	return nil
 }
