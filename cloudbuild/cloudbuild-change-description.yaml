@@ -1,0 +1,9 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions',
+      'ChangeDescription',
+      'Accept',
+      '--trigger-http',
+      '--runtime', 'go111'
+    ]
