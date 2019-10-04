@@ -4,7 +4,7 @@ steps:
       'functions',
       'deploy',
       'Accept',
-      '--trigger-http'
+      '--trigger-http',
       '--runtime', 'go111'
     ]
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -12,7 +12,7 @@ steps:
       'functions',
       'deploy',
       'ChangeDescription',
-      '--trigger-http'
+      '--trigger-http',
       '--runtime', 'go111'
     ]
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -20,7 +20,7 @@ steps:
       'functions',
       'deploy',
       'ChangeRecordAuthorisation',
-      '--trigger-http'
+      '--trigger-http',
       '--runtime', 'go111'
     ]
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -28,7 +28,7 @@ steps:
       'functions',
       'deploy',
       'ChangeTitle',
-      '--trigger-http'
+      '--trigger-http',
       '--runtime', 'go111'
     ]
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -36,7 +36,7 @@ steps:
       'functions',
       'deploy',
       'ChangeType',
-      '--trigger-http'
+      '--trigger-http',
       '--runtime', 'go111'
     ]
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -44,7 +44,7 @@ steps:
       'functions',
       'deploy',
       'Create',
-      '--trigger-http'
+      '--trigger-http',
       '--runtime', 'go111'
     ]
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -52,7 +52,7 @@ steps:
       'functions',
       'deploy',
       'Delete',
-      '--trigger-http'
+      '--trigger-http',
       '--runtime', 'go111'
     ]
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -60,6 +60,6 @@ steps:
       'functions',
       'deploy',
       'Refuse',
-      '--trigger-http'
+      '--trigger-http',
       '--runtime', 'go111'
     ]
