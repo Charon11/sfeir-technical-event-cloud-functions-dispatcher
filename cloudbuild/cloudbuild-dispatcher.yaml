@@ -1,0 +1,9 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'functions',
+      'deploy',
+      'SubjectPubSubDispatcher',
+      '--trigger-topic', 'subject-events',
+      '--runtime', 'go111'
+    ]
